@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+
 func main() {
 	// Belajar Variabel with data type
 	var namaLengkap string

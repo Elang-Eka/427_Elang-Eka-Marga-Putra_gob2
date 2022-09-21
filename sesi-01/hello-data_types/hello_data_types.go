@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+
 func main() {
 	// Belajar integer with declare data type
 	var satu uint8 = 32

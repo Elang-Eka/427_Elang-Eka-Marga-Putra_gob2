@@ -18,7 +18,7 @@ Summary sesi 1
 => belajar constant and operator  :
    	1.Constant (nilai yang tidak bisa dirubah)
    	2.Aritmetic operators (
-      	tambah(+), kurang(-), bagi(/), kali(*), modulus(%), increment(++), decrement(--)
+		tambah(+), kurang(-), bagi(/), kali(*), modulus(%), increment(++), decrement(--)
         )
    	3.Relational Operators (
             lebih dari(>), kurang dari(<), lebih dari sama dengan(>=), kurang dari sama dengan(<=)

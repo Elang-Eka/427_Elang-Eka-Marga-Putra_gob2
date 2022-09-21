@@ -9,7 +9,6 @@ func main() {
 	/*
 		belajar print hello
 	*/
-	fmt.Println("=====================================================================")
 	fmt.Println("Belajar sesi-1")
 	fmt.Println("=====================================================================")
 	fmt.Println("Hello", "Nama", "Saya", "Elang")
@@ -25,4 +24,5 @@ func main() {
 	fmt.Print("Elang", " Eka\n")
 	fmt.Print("Elang", " ", "Eka\n")
 	fmt.Println("=====================================================================")
+
 }

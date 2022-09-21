@@ -1,6 +1,7 @@
 Summary sesi 1
 427-Elang Eka Marga Putra
 
+
 => Pengertian web service yaitu penghubung atau jembatan antara frontend dan backend yang biasa disebut dengan REST API
 => Intall go and Introduction
 => Create project go 

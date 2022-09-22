@@ -6,7 +6,7 @@ import (
 
 func main() {
 	//Function
-	menyapa("Elang", 22)
+	menyapa("Elang Eka", 22)
 
 	//function bagian 2
 	perkenalan("Elang", "jalan Sri Minulyo")

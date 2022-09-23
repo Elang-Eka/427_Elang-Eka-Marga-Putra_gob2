@@ -30,7 +30,7 @@ func main() {
 	*/
 
 	var argsRaw = os.Args
-	fmt.Printf("%s", argsRaw)
+
 	//memasukkan data argsRaw di array 1 ke args
 	var args = argsRaw[1]
 

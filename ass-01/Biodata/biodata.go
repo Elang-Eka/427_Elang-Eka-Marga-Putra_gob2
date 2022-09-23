@@ -23,13 +23,14 @@ func main() {
 	/*
 		package os berguna untuk menyimpan data dalam bentuk array dengan pemisah adalah tanda spasi.
 		contoh :  go run biodata.go 1 maka akan menghasilkan data array dalam bentuk string
-		=> []string{"C:\\Users\\elang\\AppData\\Local\\Temp\\go-build3150221260\\b001\\exe\\biodata.exe", "1"}
+		=> []string{"C:\\Users\\elang\\AppData\\Local\\Temp\\go-build3150221260\\b001\\exe\\biodata.exe", "1"} (tampilan %#v Go-syntax representation of the value)
+		=> [C:\Users\elang\AppData\Local\Temp\go-build921977684\b001\exe\biodata.exe 1] (tampilan %s atau string)
 		array ke 0 adalah "C:\\Users\\elang\\AppData\\Local\\Temp\\go-build3150221260\\b001\\exe\\biodata.exe"
 		array ke 1 adalah "1"
 	*/
 
 	var argsRaw = os.Args
-
+	fmt.Printf("%s", argsRaw)
 	//memasukkan data argsRaw di array 1 ke args
 	var args = argsRaw[1]
 

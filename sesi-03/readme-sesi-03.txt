@@ -16,5 +16,5 @@ Summary sesi 2
 			age int
 			division struct
 		}
-	=> Materi Exported &Unexported merupakan file yang berisi method, func atau struct yang dibuat terpisah dari file main()
-	=> Materi init function, init function merupakan suatu function yang akan dieksekusi terlebih dahulu sebelum function main.
+      => Materi Exported &Unexported merupakan file yang berisi method, func atau struct yang dibuat terpisah dari file main()
+      => Materi init function, init function merupakan suatu function yang akan dieksekusi terlebih dahulu sebelum function main.

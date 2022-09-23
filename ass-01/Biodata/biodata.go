@@ -29,7 +29,7 @@ func main() {
 	*/
 
 	var argsRaw = os.Args
-	fmt.Printf("-> %#v\n", argsRaw)
+	
 	//memasukkan data argsRaw di array 1 ke args
 	var args = argsRaw[1]
 

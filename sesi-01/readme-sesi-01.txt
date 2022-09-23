@@ -1,6 +1,5 @@
-Summary sesi 1
-427-Elang Eka Marga Putra
-
+kode peserta 	: 149368582100-427
+nama lengkap 	: Elang Eka Marga Putra
 
 => Pengertian web service yaitu penghubung atau jembatan antara frontend dan backend yang biasa disebut dengan REST API
 => Intall go and Introduction

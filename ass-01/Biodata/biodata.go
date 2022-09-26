@@ -31,22 +31,24 @@ func main() {
 
 	var argsRaw = os.Args
 
-	//memasukkan data argsRaw di array 1 ke args
-	var args = argsRaw[1]
+	if len(argsRaw) <= 1 {
+		fmt.Println("Masukkan angka absen, contoh: go run biodata.go 1")
+	} else {
+		//memasukkan data argsRaw di array 1 ke args
+		var args = argsRaw[1]
 
-	//merubah string ke integer
-	num, err := strconv.Atoi(args)
+		//merubah string ke integer
+		num, err := strconv.Atoi(args)
 
-	//err digunakan untuk menampung isian bernilai nil
-	_ = err
-
-	//memanggil function biodata dengan parameter num
-	biodata(num)
+		//err digunakan untuk menampung isian bernilai nil
+		_ = err
+		biodata(num)
+	}
 }
 
 // function biodata dengan parameter arr bertipe data integer
 func biodata(arr int) {
-
+	check := arr - 1
 	//inisialisasi variabel people beserta isi datanya
 	var people = []Person{ //memanggil struct Person
 		{absen: "1", nama: "Elang", alamat: "Sidoarjo", pekerjaan: "Backend", alasan: "Ingin menambah pengetahuan"},
@@ -57,9 +59,13 @@ func biodata(arr int) {
 	}
 
 	fmt.Println("=============================================")
-	//print/menampilkan data pada variabel people
-	fmt.Printf(
-		"=> Absen\t: %s\n=> Nama\t\t: %s\n=> Alamat\t: %s\n=> Pekerjaan\t: %s\n=> Alasan\t: %s\n",
-		people[arr-1].absen, people[arr-1].nama, people[arr-1].alamat, people[arr-1].pekerjaan, people[arr-1].alasan) // arr-1 karena dalam inputan dimulai dari 1, sedangkan array pertama merupakan [0]
+	if check < len(people) {
+		fmt.Printf(
+			"=> Absen\t: %s\n=> Nama\t\t: %s\n=> Alamat\t: %s\n=> Pekerjaan\t: %s\n=> Alasan\t: %s\n",
+			people[arr-1].absen, people[arr-1].nama, people[arr-1].alamat, people[arr-1].pekerjaan, people[arr-1].alasan) // arr-1 karena dalam inputan dimulai dari 1, sedangkan array pertama merupakan [0]
+	} else {
+		fmt.Printf("Absen yang tersedia adalah %s hingga ", people[0].absen)
+		fmt.Println(len(people))
+	}
 	fmt.Println("=============================================")
 }

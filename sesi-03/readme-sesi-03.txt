@@ -1,6 +1,6 @@
 kode peserta 	: 149368582100-427
 nama lengkap 	: Elang Eka Marga Putra
-Summary sesi 2
+Summary sesi 3
       => Materi function untuk membuat function di golang dengan dengan menggunakan keyword func lalu diikuti 
 	   dengan nama function dan parameter yang digunakan.
       => Materi tentang closure yang merupakan sebuah anonymous function atau function tanpa nama yang dapat disimpan sebagai sebuah

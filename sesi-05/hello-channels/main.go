@@ -92,7 +92,7 @@ func main() {
 	go func(c chan int) {
 		for i := 1; i <= 5; i++ {
 			fmt.Printf("func goroutine #%d starts sending data into the channel\n", i)
-			c <- 1
+			c <- i
 			fmt.Printf("func goroutine #%d after sending data into the channel\n", i)
 		}
 
@@ -101,11 +101,8 @@ func main() {
 
 	fmt.Println("main goroutine sleeps 2 second")
 	time.Sleep(time.Second * 2)
-	r := 0
 	for v := range c5 {
-		_ = v
-		r = r + 1
-		fmt.Println("main goroutine received value from channel: ", r)
+		fmt.Println("main goroutine received value from channel: ", v)
 	}
 
 	fmt.Println("====================================================")

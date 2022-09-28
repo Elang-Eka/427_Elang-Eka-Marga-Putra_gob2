@@ -32,7 +32,7 @@ func main() {
 	// Error (Custom error)
 	fmt.Println("Error (Custom error)")
 	var password string
-
+	fmt.Print("Masukkan Password : ")
 	fmt.Scanln(&password)
 
 	if valid, err := validPassword(password); err != nil {

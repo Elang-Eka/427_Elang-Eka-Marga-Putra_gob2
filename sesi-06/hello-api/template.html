@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golang</title>
+</head>
+<body>
+    <div>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Division</th>
+            </tr>
+            {{range $value := .}}
+            <tr>
+                <td>{{$value.ID}}</td>
+                <td>{{$value.Name}}</td>
+                <td>{{$value.Age}}</td>
+                <td>{{$value.Division}}</td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+</body>
+</html>

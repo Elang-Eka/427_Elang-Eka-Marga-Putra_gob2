@@ -18,16 +18,20 @@ var CarDatas = []Car{}
 
 func CreateCar(ctx *gin.Context) {
 	var newCar Car
-
 	if err := ctx.ShouldBindJSON(&newCar); err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
+	// create new id
 	newCar.CarID = fmt.Sprintf("c%d", len(CarDatas)+1)
+	// create new car
 	CarDatas = append(CarDatas, newCar)
 
+	// json message
 	ctx.JSON(http.StatusCreated, gin.H{
-		"car": newCar,
+		"message":    "Success",
+		"statusCode": http.StatusCreated,
+		"data":       newCar,
 	})
 }
 
@@ -52,14 +56,15 @@ func UpdateCar(ctx *gin.Context) {
 
 	if !condition {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-			"error_status":  "Data Not Found",
-			"error_message": fmt.Sprintf("Car with id %v not found", carID),
+			"error_statusCode": http.StatusNotFound,
+			"error_message":    fmt.Sprintf("Car with id %v not found", carID),
 		})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("Car with id %v has been successfully updated", carID),
+		"statusCode": http.StatusOK,
+		"message":    fmt.Sprintf("Car with id %v has been successfully updated", carID),
 	})
 }
 
@@ -78,14 +83,16 @@ func GetCar(ctx *gin.Context) {
 
 	if !condition {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-			"error_status":  "Data Not Found",
-			"error_message": fmt.Sprintf("Car with id %v not found", carID),
+			"error_statusCode": http.StatusNotFound,
+			"error_message":    fmt.Sprintf("Car with id %v not found", carID),
 		})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"car": carData,
+		"message":    "Success",
+		"statusCode": http.StatusOK,
+		"data":       carData,
 	})
 }
 
@@ -104,8 +111,8 @@ func DeleteCar(ctx *gin.Context) {
 
 	if !condition {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-			"error_status":  "Data Not Found",
-			"error_message": fmt.Sprintf("Car with id %v not found", carID),
+			"error_statusCode": http.StatusNotFound,
+			"error_message":    fmt.Sprintf("Car with id %v not found", carID),
 		})
 		return
 	}
@@ -115,6 +122,19 @@ func DeleteCar(ctx *gin.Context) {
 	CarDatas = CarDatas[:len(CarDatas)-1]
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": fmt.Sprintf("Car with id %v has been successfully deleted", carID),
+		"statusCode": http.StatusOK,
+		"message":    fmt.Sprintf("Car with id %v has been successfully deleted", carID),
+	})
+}
+
+func GetCars(ctx *gin.Context) {
+	var carData Car
+
+	_ = carData
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":    "Success",
+		"statusCode": http.StatusOK,
+		"data":       CarDatas,
 	})
 }

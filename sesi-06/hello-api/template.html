@@ -14,6 +14,7 @@
                 <th>Name</th>
                 <th>Age</th>
                 <th>Division</th>
+                <th colspan="2">Action</th>
             </tr>
             {{range $value := .}}
             <tr>
@@ -21,6 +22,12 @@
                 <td>{{$value.Name}}</td>
                 <td>{{$value.Age}}</td>
                 <td>{{$value.Division}}</td>
+                <td>
+                    <button>Update</button>
+                </td>
+                <td>
+                    <button>Delete</button>
+                </td>
             </tr>
             {{end}}
         </table>

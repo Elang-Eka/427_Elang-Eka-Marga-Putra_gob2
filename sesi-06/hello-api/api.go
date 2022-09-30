@@ -38,10 +38,10 @@ func main() {
 // function get untuk mendapatkan value dari employees
 func getEmployees(w http.ResponseWriter, r *http.Request) {
 	// Bagian 1
-	// /*
-	// 	Mengatur Content-Type menjadi application/json dalam method
-	// 	Set untuk mengirim response data dalam bentuk JSON
-	// */
+	/*
+		Mengatur Content-Type menjadi application/json dalam method
+		Set untuk mengirim response data dalam bentuk JSON
+	*/
 
 	// w.Header().Set("Content-Type", "Application/json")
 
@@ -52,12 +52,12 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 
-	// // jika salah method maka akan muncul response error
-	// /*
-	// 	http.StatusBadRequest merupakan sebuah konstanta dari
-	// 	package http.StatusBadRequest yang merepresentasikan status
-	// 	400 yang merupakan code badRequest.
-	// */
+	// jika salah method maka akan muncul response error
+	/*
+		http.StatusBadRequest merupakan sebuah konstanta dari
+		package http.StatusBadRequest yang merepresentasikan status
+		400 yang merupakan code badRequest.
+	*/
 	// http.Error(w, "Invalid Method", http.StatusBadRequest)
 
 	// Bagian 2

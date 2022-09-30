@@ -1,9 +1,9 @@
 package main
 
-import "hello/routers"
+import Routers "hello/routers"
 
 func main() {
 	var PORT = ":8080"
 
-	routers.StartServer().Run(PORT)
+	Routers.StartServer().Run(PORT)
 }

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"hello/database"
 	"hello/models"
+	"os"
 
 	"gorm.io/gorm"
 )
@@ -132,26 +134,6 @@ func getUsersWithProduct() {
 	fmt.Printf("%+v\n\n", users)
 }
 
-// SELECT users."id" as id_user ,
-// email, products."id" as id_produk , products."name" FROM users,
-// products where products.user_id = users.id
-
-func getProductByUser(id int) {
-	db := database.GetDB()
-
-	// users := models.User{}
-	product := models.Product{}
-	err := db.Where("id = ?", id).Select(&product.ID, &product.Name, &product.Brand)
-
-	if err != nil {
-		fmt.Println("Error getting user datas with product", err)
-		return
-	}
-
-	fmt.Println("User Datas With Products")
-	fmt.Printf("%+v\n\n", product)
-}
-
 func deleteProductById(id uint) {
 	db := database.GetDB()
 
@@ -189,8 +171,10 @@ func Pilihan() {
 				switch pilih {
 				case 1:
 					var email string
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Email user yang akan dibuat: ")
 					fmt.Scanln(&email)
+
 					createUser(email)
 					i = 0
 					loop = 1
@@ -200,6 +184,7 @@ func Pilihan() {
 					loop = 1
 				case 3:
 					var id uint
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Id user yang akan di lihat: ")
 					fmt.Scanln(&id)
 					getUserById(id)
@@ -208,8 +193,10 @@ func Pilihan() {
 				case 4:
 					var email string
 					var id uint
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Id user yang akan di ubah: ")
 					fmt.Scanln(&id)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan email user yang baru: ")
 					fmt.Scanln(&email)
 					updateUserById(id, email)
@@ -217,6 +204,7 @@ func Pilihan() {
 					loop = 1
 				case 5:
 					var id uint
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Id user: ")
 					fmt.Scanln(&id)
 					deleteUserById(id)
@@ -224,23 +212,27 @@ func Pilihan() {
 					loop = 1
 				case 6:
 					var id uint
-					var brand string
-					var nama string
+					consoleReader := bufio.NewReader(os.Stdin)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Id user: ")
 					fmt.Scanln(&id)
-					fmt.Print("Masukkan brand produk")
-					fmt.Scanln(&brand)
-					fmt.Print("Masukkan nama produk")
-					fmt.Scanln(&nama)
+					fmt.Println("==============================")
+					fmt.Print("Masukkan brand produk: ")
+					brand, _ := consoleReader.ReadString('\n')
+					fmt.Println("==============================")
+					fmt.Print("Masukkan nama produk: ")
+					nama, _ := consoleReader.ReadString('\n')
 					createProduct(id, brand, nama)
 					i = 0
 					loop = 1
 				case 7:
+					fmt.Println("==============================")
 					getUsersWithProduct()
 					i = 0
 					loop = 1
 				case 8:
 					var id uint
+					fmt.Println("==============================")
 					fmt.Print("Masukkan Id user: ")
 					fmt.Scanln(&id)
 					deleteProductById(id)
@@ -249,7 +241,9 @@ func Pilihan() {
 				case 9:
 					i = 1
 					loop = 0
+					fmt.Println("==============================")
 					fmt.Println("Terima Kasih")
+					fmt.Println("==============================")
 				}
 			} else {
 				i = 0

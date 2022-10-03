@@ -49,7 +49,13 @@ func main() {
 	fmt.Println("Successfully connected to database")
 
 	Pilihan()
+}
 
+func resetId() {
+	sqlIncrement := `
+	ALTER SQUENCE employees_id_seq RESTART WITH 1
+	`
+	_, err = db.Exec(sqlIncrement)
 }
 
 func createEmployee(fullname string, email string, age int, division string) {
@@ -145,24 +151,31 @@ func Pilihan() {
 			fmt.Println("==============================")
 			fmt.Print("Masukkan Pilihan : ")
 			fmt.Scanln(&pilih)
-			if pilih == 1 || pilih == 2 || pilih == 3 || pilih == 4 {
+			if pilih == 1 || pilih == 2 || pilih == 3 || pilih == 4 || pilih == 5 {
 				switch pilih {
 				case 1:
 					var email, division string
 					var age int
+					resetId()
 					consoleReader := bufio.NewReader(os.Stdin)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan nama lengkap : ")
 					full_name, _ := consoleReader.ReadString('\n')
+					fmt.Println("==============================")
 					fmt.Print("Masukkan email : ")
 					fmt.Scanln(&email)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan umur : ")
 					fmt.Scanln(&age)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan divisi : ")
 					fmt.Scanln(&division)
+					fmt.Println("==============================")
 					createEmployee(full_name, email, age, division)
 					i = 0
 					loop = 1
 				case 2:
+					fmt.Println("==============================")
 					GetEmployees()
 					i = 0
 					loop = 1
@@ -170,37 +183,46 @@ func Pilihan() {
 					consoleReader := bufio.NewReader(os.Stdin)
 					var email, division string
 					var id, age int
+					fmt.Println("==============================")
 					fmt.Print("Masukkan id yang akan diganti : ")
 					fmt.Scanln(&id)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan nama lengkap : ")
 					full_name, _ := consoleReader.ReadString('\n')
+					fmt.Println("==============================")
 					fmt.Print("Masukkan email : ")
 					fmt.Scanln(&email)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan umur : ")
 					fmt.Scanln(&age)
+					fmt.Println("==============================")
 					fmt.Print("Masukkan division : ")
 					fmt.Scanln(&division)
+					fmt.Println("==============================")
 					UpdateEmployees(id, full_name, email, age, division)
 					i = 0
 					loop = 1
 				case 4:
 					var id int
+					fmt.Println("==============================")
 					fmt.Print("Masukkan id yang akan dihapus : ")
 					fmt.Scanln(&id)
+					fmt.Println("==============================")
 					DeleteEmployees(id)
 					i = 0
 					loop = 1
 				case 5:
 					i = 1
-					loop = 2
+					loop = 0
+					fmt.Println("==============================")
+					fmt.Println("Terima Kasih")
+					fmt.Println("==============================")
 				}
 			} else {
 				i = 0
 				loop = 1
 				fmt.Println("Pilihan tidak ada menu hanya 1 hingga 5")
 			}
-		} else {
-			fmt.Println("Terima Kasih")
 		}
 	}
 }

@@ -32,6 +32,24 @@ func createUser(email string) {
 	fmt.Println("New User Data")
 }
 
+func getAllUser() {
+	db := database.GetDB()
+
+	user := models.User{}
+
+	err := db.First(&user).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			fmt.Println("User data not found")
+			return
+		}
+		print("Error finding user:", err)
+	}
+
+	fmt.Printf("User Data: %+v\n\n", user)
+}
+
 func getUserById(id uint) {
 	db := database.GetDB()
 
@@ -63,6 +81,21 @@ func updateUserById(id uint, email string) {
 	}
 
 	fmt.Printf("Update user's email: %+v \n\n", user.Email)
+}
+
+func deleteUserById(id uint) {
+	db := database.GetDB()
+
+	user := models.User{}
+
+	err := db.Where("id = ?", id).Delete(&user).Error
+
+	if err != nil {
+		fmt.Println("Error Deleting Product:", err.Error())
+		return
+	}
+
+	fmt.Printf("Product with id %d has been successfully deleted\n\n", id)
 }
 
 func createProduct(userId uint, brand string, name string) {
@@ -99,6 +132,26 @@ func getUsersWithProduct() {
 	fmt.Printf("%+v\n\n", users)
 }
 
+// SELECT users."id" as id_user ,
+// email, products."id" as id_produk , products."name" FROM users,
+// products where products.user_id = users.id
+
+func getProductByUser(id int) {
+	db := database.GetDB()
+
+	// users := models.User{}
+	product := models.Product{}
+	err := db.Where("id = ?", id).Select(&product.ID, &product.Name, &product.Brand)
+
+	if err != nil {
+		fmt.Println("Error getting user datas with product", err)
+		return
+	}
+
+	fmt.Println("User Datas With Products")
+	fmt.Printf("%+v\n\n", product)
+}
+
 func deleteProductById(id uint) {
 	db := database.GetDB()
 
@@ -121,16 +174,18 @@ func Pilihan() {
 		if loop == 1 {
 			fmt.Println("==============================")
 			fmt.Println("1. Create User")
-			fmt.Println("2. Get User By Id")
-			fmt.Println("3. Update User By Id")
-			fmt.Println("4. Create Product")
-			fmt.Println("5. Get Users With Product")
-			fmt.Println("6. Delete Product By Id")
-			fmt.Println("7. Exit")
+			fmt.Println("2. Get All User")
+			fmt.Println("3. Get User By Id")
+			fmt.Println("4. Update User By Id")
+			fmt.Println("5. Delete User By Id")
+			fmt.Println("6. Create Product")
+			fmt.Println("7. Get Users With Product")
+			fmt.Println("8. Delete Product By Id")
+			fmt.Println("9. Exit")
 			fmt.Println("==============================")
 			fmt.Print("Masukkan Pilihan : ")
 			fmt.Scanln(&pilih)
-			if pilih == 1 || pilih == 2 || pilih == 3 || pilih == 4 || pilih == 5 || pilih == 6 {
+			if pilih == 1 || pilih == 2 || pilih == 3 || pilih == 4 || pilih == 5 || pilih == 6 || pilih == 7 || pilih == 8 || pilih == 9 {
 				switch pilih {
 				case 1:
 					var email string
@@ -140,13 +195,17 @@ func Pilihan() {
 					i = 0
 					loop = 1
 				case 2:
+					getAllUser()
+					i = 0
+					loop = 1
+				case 3:
 					var id uint
 					fmt.Print("Masukkan Id user yang akan di lihat: ")
 					fmt.Scanln(&id)
 					getUserById(id)
 					i = 0
 					loop = 1
-				case 3:
+				case 4:
 					var email string
 					var id uint
 					fmt.Print("Masukkan Id user yang akan di ubah: ")
@@ -156,7 +215,14 @@ func Pilihan() {
 					updateUserById(id, email)
 					i = 0
 					loop = 1
-				case 4:
+				case 5:
+					var id uint
+					fmt.Print("Masukkan Id user: ")
+					fmt.Scanln(&id)
+					deleteUserById(id)
+					i = 0
+					loop = 1
+				case 6:
 					var id uint
 					var brand string
 					var nama string
@@ -169,28 +235,27 @@ func Pilihan() {
 					createProduct(id, brand, nama)
 					i = 0
 					loop = 1
-				case 5:
+				case 7:
 					getUsersWithProduct()
 					i = 0
 					loop = 1
-				case 6:
+				case 8:
 					var id uint
 					fmt.Print("Masukkan Id user: ")
 					fmt.Scanln(&id)
 					deleteProductById(id)
 					i = 0
 					loop = 1
-				case 7:
+				case 9:
 					i = 1
-					loop = 2
+					loop = 0
+					fmt.Println("Terima Kasih")
 				}
 			} else {
 				i = 0
 				loop = 1
-				fmt.Println("Pilihan tidak ada menu hanya 1 hingga 7")
+				fmt.Println("Pilihan tidak ada menu hanya 1 hingga 9")
 			}
-		} else {
-			fmt.Println("Terima Kasih")
 		}
 	}
 }

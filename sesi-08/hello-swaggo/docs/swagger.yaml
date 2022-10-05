@@ -119,4 +119,24 @@ paths:
       summary: Get details of order by id
       tags:
       - orders
+    put:
+      consumes:
+      - application/json
+      description: Update data order where orderId
+      parameters:
+      - description: ID
+        in: path
+        name: orderId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Order'
+      summary: Update data order where orderId
+      tags:
+      - orders
 swagger: "2.0"

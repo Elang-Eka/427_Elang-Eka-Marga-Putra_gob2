@@ -51,8 +51,10 @@ func main() {
 	router.HandleFunc("/orders/{orderId}", getOrder).Methods("GET")
 	// Create
 	router.HandleFunc("/orders", createOrders).Methods("POST")
+	// Update
+	router.HandleFunc("/orders/{orderId}", UpdateOrder).Methods("PUT")
 	// Delete
-	router.HandleFunc("/orders/{orderId}", getOrder).Methods("DELETE")
+	router.HandleFunc("/orders/{orderId}", deleteOrder).Methods("DELETE")
 	// Swagger
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	log.Fatal(http.ListenAndServe(":8080", router))
@@ -131,6 +133,33 @@ func deleteOrder(w http.ResponseWriter, r *http.Request) {
 		if order.OrderID == inputOrderId {
 			orders = append(orders[:i], orders[i+1:]...)
 			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+	}
+
+}
+
+// UpdateOrder godoc
+// @Summary Update data order where orderId
+// @Description Update data order where orderId
+// @Tags orders
+// @Accept json
+// @Produce json
+// @Param orderId path int true "ID"
+// @Success 200 {object} Order
+// @Router /orders/{orderId} [put]
+func UpdateOrder(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	inputOrderId := params["orderId"]
+
+	for i, order := range orders {
+		if order.OrderID == inputOrderId {
+			orders = append(orders[:i], orders[i+1:]...)
+			var updateOrder Order
+			json.NewDecoder(r.Body).Decode(&updateOrder)
+			orders = append(orders, updateOrder)
+			json.NewEncoder(w).Encode(updateOrder)
 			return
 		}
 	}

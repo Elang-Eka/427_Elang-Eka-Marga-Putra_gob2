@@ -114,6 +114,36 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "Update data order where orderId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "summary": "Update data order where orderId",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Order"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "Delete data order where orderId",
                 "consumes": [

@@ -199,7 +199,6 @@ func (idb *InDB) UpdateOrder(c *gin.Context) {
 			}
 		}
 	}
-
 }
 
 // delete data with {id}

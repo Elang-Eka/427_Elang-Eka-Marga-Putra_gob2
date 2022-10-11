@@ -72,8 +72,25 @@ func (idb *InDB) Getdata(c *gin.Context) {
 			Water: reload.Water,
 			Wind:  reload.Wind,
 		}
+		var msg1, msg2 string
+		if dataStruct.Water <= 5 {
+			msg1 = "Aman"
+		} else if dataStruct.Water >= 6 && dataStruct.Water <= 8 {
+			msg1 = "Siaga"
+		} else if dataStruct.Water > 8 {
+			msg1 = "Bahaya"
+		}
+		if dataStruct.Wind <= 6 {
+			msg2 = "Aman"
+		} else if dataStruct.Wind >= 7 && dataStruct.Wind <= 15 {
+			msg2 = "Siaga"
+		} else if dataStruct.Wind > 15 {
+			msg2 = "Bahaya"
+		}
 		c.JSON(http.StatusOK, gin.H{
-			"status": dataStruct,
+			"messageWater": msg1,
+			"messageWind":  msg2,
+			"status":       dataStruct,
 		})
 	}
 }

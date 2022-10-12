@@ -16,6 +16,10 @@ type Data struct {
 }
 
 func (idb *InDB) PostData(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "POST")
 	// init variabel
 	var (
 		reload models.AutoReload
@@ -51,6 +55,11 @@ func (idb *InDB) PostData(c *gin.Context) {
 
 // get data
 func (idb *InDB) Getdata(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+	// c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
 
 	// init variabel
 	var (
@@ -88,15 +97,71 @@ func (idb *InDB) Getdata(c *gin.Context) {
 			msg2 = "Bahaya"
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"messageWater": msg1,
-			"messageWind":  msg2,
 			"status":       dataStruct,
+			"MessageWater": msg1,
+			"MessageWind":  msg2,
 		})
 	}
 }
 
-func (idb *InDB) UpdateData(c *gin.Context) {
+// get data
+func (idb *InDB) Getdatas(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
+	// init variabel
+	var (
+		reload  models.AutoReload
+		reload2 []models.AutoReload
+		result  gin.H
+	)
+	// find all data
+	idb.DB.Find(&reload2).Take(&reload2).Last(&reload2)
+	// if reload zero/0 response message
+	if len(reload2) <= 0 {
+		result = gin.H{
+			"message": "data not found",
+		}
+		c.JSON(http.StatusNotFound, result)
+	} else {
+		idb.DB.Find(&reload).Take(&reload).Last(&reload)
+		dataStruct := Data{
+			Water: reload.Water,
+			Wind:  reload.Wind,
+		}
+		var msg1, msg2 string
+		if dataStruct.Water <= 5 {
+			msg1 = "Aman"
+		} else if dataStruct.Water >= 6 && dataStruct.Water <= 8 {
+			msg1 = "Siaga"
+		} else if dataStruct.Water > 8 {
+			msg1 = "Bahaya"
+		}
+		if dataStruct.Wind <= 6 {
+			msg2 = "Aman"
+		} else if dataStruct.Wind >= 7 && dataStruct.Wind <= 15 {
+			msg2 = "Siaga"
+		} else if dataStruct.Wind > 15 {
+			msg2 = "Bahaya"
+		}
 
+		// response get found order
+		result = gin.H{
+			"status":       dataStruct,
+			"MessageWater": msg1,
+			"MessageWind":  msg2,
+		}
+		c.JSON(http.StatusOK, result)
+	}
+
+}
+
+func (idb *InDB) UpdateData(c *gin.Context) {
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
+	c.Writer.Header().Set("Access-Control-Allow-Methods", "PUT")
 	// req param :orderId
 	id := c.Param("id")
 

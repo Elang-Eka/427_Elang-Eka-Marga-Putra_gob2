@@ -19,15 +19,17 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Water</th>
+                    <th>Message Water</th>
                     <th>Wind</th>
-                    <th>Message</th>
+                    <th>Message Wind</th>
                 </tr>
             </thead>
             <tbody>
                     <tr>
                         <td><p id="water"></p></td>
-                        <td><p></p></td>
-                        <td><p>hai</p></td>
+                        <td><p id="msg1"></p></td>
+                        <td><p id="wind"></p></td>
+                        <td><p id="msg2"></p></td>
                     </tr>
             </tbody>
         </table>
@@ -35,19 +37,27 @@
 </body>
 
 <script>
-    const api_url = "http://localhost:8080/autoReload/1";
+     const api_url = "http://127.0.0.1:8080/autoReload"
 
-    async function get_data(params) { 
-        // data
-        const response = await fetch(params); 
-        var data = await response.json();
-        const parsing = JSON.parse(data)
-        var water = parsing["status"]["water"]
-        document.getElementById("water").innerHTML = "water: " + water;
-       
-        setTimeout(() => get_data(params), 1000)
+    async function get_data(a) { 
+    //     // data
+    // console.log("test")
+        const response = await fetch(a)
+        var data = await response.json()
+        // const parsing = JSON.parse(data)
+        var water = data["status"]["water"]
+        var wind = data["status"]["wind"]
+        var msg1 = data["MessageWater"]
+        var msg2 = data["MessageWind"]
+        // console.log(data)
+        document.getElementById("water").innerHTML = water;
+        document.getElementById("wind").innerHTML = wind;
+        document.getElementById("msg1").innerHTML = msg1;
+        document.getElementById("msg2").innerHTML = msg2;
+    
+        setTimeout(() => get_data(a), 1000*5 /*1000 is 1 second*/)
     }
 
-    get_data(api_url)
+get_data(api_url)
 </script>
 </html>

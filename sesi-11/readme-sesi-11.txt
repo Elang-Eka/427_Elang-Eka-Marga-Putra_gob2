@@ -8,7 +8,7 @@ Summary sesi 11
 				2. Misalkan kita mempunyai sebuah file bernama calculation.go, dan ketika kita ingin membuat file testing
 				   untuk file calculation.go, maka perlu membuat file dengan nama calculation_test.go. Perlu diingat disini
 				   Wbahwa penaman file testing boleh bebas, asalkan di akhiri dengan penaman _test.go
-	   Terdapat juga aturan untuk membuat function testing pada bahasa Go. Berikut merupakan aturannya:
+	  			Terdapat juga aturan untuk membuat function testing pada bahasa Go. Berikut merupakan aturannya:
 				1. Function untuk testing harus diwali dengan penamaan Test.
 				2. Misalkan kita mempunyai suatu function bernama sum dan kita ingin membuat unit test dari function
 				   tersebut, maka kita dapat memberikan nama untuk function unit test kita seperti TestSum.

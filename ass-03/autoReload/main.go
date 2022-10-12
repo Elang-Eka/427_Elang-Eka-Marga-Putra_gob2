@@ -15,8 +15,9 @@ func main() {
 	inDB := &controllers.InDB{DB: db}
 	router := gin.Default()
 	// router API
-	router.POST("/autoReload/post", inDB.PostData)
-	router.PUT("/autoReload/update", inDB.UpdateData)
+	router.POST("/autoReload/", inDB.PostData)
+	router.PUT("/autoReload/:id", inDB.UpdateData)
 	router.GET("/autoReload/:id", inDB.Getdata)
+	router.GET("/autoReload", inDB.Getdatas)
 	router.Run(PORT)
 }

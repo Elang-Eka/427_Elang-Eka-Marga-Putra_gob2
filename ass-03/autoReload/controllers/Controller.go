@@ -53,59 +53,35 @@ func (idb *InDB) PostData(c *gin.Context) {
 	}
 }
 
-// get data
-func (idb *InDB) Getdata(c *gin.Context) {
+// get all data
+func (idb *InDB) Getdatas(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
-	// c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 	c.Writer.Header().Set("Access-Control-Allow-Methods", "GET")
-
 	// init variabel
 	var (
-		reload models.AutoReload
-		result gin.H
+		reload2 []models.AutoReload
+		result  gin.H
 	)
-	// req param :orderId
-	id := c.Param("id")
-
-	err := idb.DB.Where("id = ?", id).First(&reload).Error
+	err := idb.DB.Order("id desc").Find(&reload2).Error
+	// err := idb.DB.Find(&reload2).Error
 	if err != nil {
-		// response data item not found
 		result = gin.H{
-			"result": "Data not found",
+			"message": "data not found",
 		}
 		c.JSON(http.StatusNotFound, result)
 	} else {
-		dataStruct := Data{
-			Water: reload.Water,
-			Wind:  reload.Wind,
+		// response get found order
+		result = gin.H{
+			"status": reload2,
 		}
-		var msg1, msg2 string
-		if dataStruct.Water <= 5 {
-			msg1 = "Aman"
-		} else if dataStruct.Water >= 6 && dataStruct.Water <= 8 {
-			msg1 = "Siaga"
-		} else if dataStruct.Water > 8 {
-			msg1 = "Bahaya"
-		}
-		if dataStruct.Wind <= 6 {
-			msg2 = "Aman"
-		} else if dataStruct.Wind >= 7 && dataStruct.Wind <= 15 {
-			msg2 = "Siaga"
-		} else if dataStruct.Wind > 15 {
-			msg2 = "Bahaya"
-		}
-		c.JSON(http.StatusOK, gin.H{
-			"status":       dataStruct,
-			"MessageWater": msg1,
-			"MessageWind":  msg2,
-		})
+		c.JSON(http.StatusOK, result)
 	}
 }
 
-// get data
-func (idb *InDB) Getdatas(c *gin.Context) {
+// get 1 data
+func (idb *InDB) Getdata(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
@@ -157,6 +133,7 @@ func (idb *InDB) Getdatas(c *gin.Context) {
 
 }
 
+// Update Data
 func (idb *InDB) UpdateData(c *gin.Context) {
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")

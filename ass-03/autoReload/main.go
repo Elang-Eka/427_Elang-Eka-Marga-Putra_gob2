@@ -17,7 +17,7 @@ func main() {
 	// router API
 	router.POST("/autoReload/", inDB.PostData)
 	router.PUT("/autoReload/:id", inDB.UpdateData)
-	router.GET("/autoReload/:id", inDB.Getdata)
-	router.GET("/autoReload", inDB.Getdatas)
+	router.GET("/autoReload/all", inDB.Getdatas)
+	router.GET("/autoReload/first", inDB.Getdata)
 	router.Run(PORT)
 }

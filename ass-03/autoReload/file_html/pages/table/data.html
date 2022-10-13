@@ -244,6 +244,7 @@ get_data(api_url)
   
     async function get_data2() { 
       const response= await fetch('http://127.0.0.1:8080/autoReload/all')
+      
       var data = await response.json()
       length = data.status.length
       var temp=""
@@ -275,11 +276,10 @@ get_data(api_url)
           newlength = count
       }
       document.getElementById("data").innerHTML= temp;
-
-      // setTimeout error
-      // setTimeout(() => get_data(a), 1000*5 /*1000 is 1 second*/)
+      setTimeout(() => get_data2(), 1000*5 /*1000 is 1 second*/)
     }
     get_data2()
+    
 </script>
 </body>
 </html>

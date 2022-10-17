@@ -54,7 +54,7 @@ func ProductAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		if Product.UserID != UserID {
+		if Product.ID != UserID {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"error":   "Unauthorized",
 				"message": "You are not allowed to access this data",

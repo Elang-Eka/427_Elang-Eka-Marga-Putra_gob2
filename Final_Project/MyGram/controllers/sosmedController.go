@@ -66,9 +66,8 @@ func SosmedGet(c *gin.Context) {
 	db := database.GetDB()
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
-	Sosmed := models.SocialMed{}
+	Sosmed := []models.SocialMed{}
 	User := models.User{}
-
 	userID := uint(userData["id"].(float64))
 
 	if contentType == appJSON {
@@ -85,31 +84,32 @@ func SosmedGet(c *gin.Context) {
 		})
 		return
 	}
-
-	err = db.Select("username, id").Where("id = ?", userID).Find(&User).Error
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error":   "Not Found",
-			"message": err.Error(),
-		})
-	}
-
-	users := Data2{
-		ID:       int(userID),
-		Username: User.Username,
-	}
 	var data []Data
-	dataStruct := Data{
-		ID:               Sosmed.ID,
-		Name:             Sosmed.Name,
-		Social_media_url: Sosmed.Social_media_url,
-		UserID:           int(Sosmed.UserId),
-		CreatedAt:        Sosmed.CreatedAt,
-		UpdateAt:         Sosmed.UpdatedAt,
-		User:             users,
-	}
-	data = append(data, dataStruct)
+	for i := 0; i < len(Sosmed); i++ {
+		err = db.Select("username, id").Where("id = ?", userID).Find(&User).Error
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error":   "Not Found",
+				"message": err.Error(),
+			})
+		}
 
+		users := Data2{
+			ID:       int(userID),
+			Username: User.Username,
+		}
+
+		dataStruct := Data{
+			ID:               Sosmed[i].ID,
+			Name:             Sosmed[i].Name,
+			Social_media_url: Sosmed[i].Social_media_url,
+			UserID:           int(Sosmed[i].UserId),
+			CreatedAt:        Sosmed[i].CreatedAt,
+			UpdateAt:         Sosmed[i].UpdatedAt,
+			User:             users,
+		}
+		data = append(data, dataStruct)
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"social_medias": data,
 	})
@@ -134,14 +134,6 @@ func SosmedUpdate(c *gin.Context) {
 	Sosmed.UserId = userID
 	Sosmed.ID = uint(sosmedId)
 
-	err := db.Model(&Sosmed).Where("id = ?", sosmedId).Find(&Sosmed).Error
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Bad Request",
-			"message": err.Error(),
-		})
-		return
-	}
 	if userID != Sosmed.UserId {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error":   "Bad Request",
@@ -150,7 +142,7 @@ func SosmedUpdate(c *gin.Context) {
 		return
 	}
 
-	err = db.Model(&Sosmed).Where("id = ?", sosmedId).Updates(models.SocialMed{Name: Sosmed.Name, Social_media_url: Sosmed.Social_media_url}).Error
+	err := db.Model(&Sosmed).Where("id = ?", sosmedId).Updates(models.SocialMed{Name: Sosmed.Name, Social_media_url: Sosmed.Social_media_url}).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Bad Request",
@@ -225,7 +217,6 @@ func SosmedGetByIdUser(c *gin.Context) {
 	Sosmed := []models.SocialMed{}
 	_ = userData
 	userId, _ := strconv.Atoi(c.Param("userIdSos"))
-
 	if contentType == appJSON {
 		c.ShouldBindJSON(&Sosmed)
 	} else {

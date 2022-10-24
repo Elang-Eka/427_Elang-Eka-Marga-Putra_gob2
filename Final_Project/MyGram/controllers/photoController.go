@@ -34,20 +34,14 @@ func CreatePhoto(c *gin.Context) {
 	db := database.GetDB()
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
+	userID := uint(userData["id"].(float64))
 
 	file, err := c.FormFile("photo_url")
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(file.Filename)
-
-	err = c.SaveUploadedFile(file, "assets/img/"+file.Filename)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	Photo := models.Photo{}
-	userID := uint(userData["id"].(float64))
 
 	if contentType == appJSON {
 		c.ShouldBindJSON(&Photo)
@@ -57,6 +51,17 @@ func CreatePhoto(c *gin.Context) {
 
 	Photo.User_Id = userID
 	Photo.Photo_url = file.Filename
+
+	idPhoto := strconv.Itoa(int(userID))
+	createTimeM := strconv.Itoa(Photo.CreatedAt.Minute())
+	createTimeD := strconv.Itoa(Photo.CreatedAt.Day())
+	createTimeH := strconv.Itoa(Photo.CreatedAt.Hour())
+	location := "assets/img/" + idPhoto + createTimeM + createTimeH + createTimeD + file.Filename
+	Photo.Photo_url = location
+	err = c.SaveUploadedFile(file, location)
+	if err != nil {
+		log.Fatal(err)
+	}
 	err = db.Debug().Create(&Photo).Error
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -69,7 +74,7 @@ func CreatePhoto(c *gin.Context) {
 		"id":               Photo.ID,
 		"title":            Photo.Title,
 		"social_media_url": Photo.Caption,
-		"photo_url":        file.Filename,
+		"photo_url":        location,
 		"user_id":          userID,
 		"created_at":       Photo.CreatedAt,
 	})
@@ -84,7 +89,6 @@ func PhotoGet(c *gin.Context) {
 	User := models.User{}
 
 	userID := uint(userData["id"].(float64))
-
 	if contentType == appJSON {
 		c.ShouldBindJSON(&Photo)
 	} else {
@@ -132,56 +136,6 @@ func PhotoGet(c *gin.Context) {
 	})
 }
 
-// Read User all
-func PhotoGetAll(c *gin.Context) {
-	db := database.GetDB()
-	contentType := helpers.GetContentType(c)
-	Photo := []models.Photo{}
-
-	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
-	} else {
-		c.ShouldBind(&Photo)
-	}
-
-	err := db.Find(&Photo).Error
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error":   "Not Found",
-			"message": err.Error(),
-		})
-		return
-	}
-
-	type Data1 struct {
-		ID        uint      `json:"photo_id"`
-		Title     string    `json:"title"`
-		Caption   string    `json:"caption"`
-		Photo_url string    `json:"photo_url"`
-		UserID    int       `json:"user_id"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdateAt  time.Time `json:"update_at"`
-	}
-
-	var data []Data1
-	for i := 0; i < len(Photo); i++ {
-
-		dataStruct := Data1{
-			ID:        Photo[i].ID,
-			Title:     Photo[i].Title,
-			Caption:   Photo[i].Caption,
-			Photo_url: Photo[i].Photo_url,
-			UserID:    int(Photo[i].User_Id),
-			CreatedAt: Photo[i].CreatedAt,
-			UpdateAt:  Photo[i].UpdatedAt,
-		}
-		data = append(data, dataStruct)
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": data,
-	})
-}
-
 // Update Photo
 func PhotoUpdate(c *gin.Context) {
 	db := database.GetDB()
@@ -194,7 +148,6 @@ func PhotoUpdate(c *gin.Context) {
 		log.Fatal(err)
 	}
 	log.Println(file.Filename)
-
 	err = c.SaveUploadedFile(file, "assets/img/"+file.Filename)
 	if err != nil {
 		log.Fatal(err)

@@ -46,9 +46,6 @@ func StartApp() *gin.Engine {
 		// Get Account Photo
 		photoRouter.GET("/", controllers.PhotoGet)
 
-		// Get Any friend/user photo
-		photoRouter.GET("/all", controllers.PhotoGetAll)
-
 		// Update Account photo
 		photoRouter.PUT("/:photoId", controllers.PhotoUpdate)
 
@@ -85,9 +82,6 @@ func StartApp() *gin.Engine {
 
 		// Get Comment
 		commentRouter.GET("/:photoId", controllers.GetComment)
-
-		// Get All Comment By Photos
-		commentRouter.GET("/all/:photoId", controllers.GetCommentAll)
 
 		// Update Comment
 		commentRouter.PUT("/:commentId", controllers.UpdateComment)

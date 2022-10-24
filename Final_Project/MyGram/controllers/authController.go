@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"mygram/database"
 	"mygram/helpers"
 	"mygram/models"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +14,6 @@ var (
 	appJSON = "application/json"
 )
 
-// Register
 func UserRegister(c *gin.Context) {
 	db := database.GetDB()
 	contentType := helpers.GetContentType(c)
@@ -27,11 +26,12 @@ func UserRegister(c *gin.Context) {
 	}
 
 	passCheck := c.Request.FormValue("password")
-	Check, _ := strconv.Atoi(passCheck)
-	if Check < 6 {
+	fmt.Println(len(passCheck))
+	if len(passCheck) < 6 {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Password must be at least 6 characters long",
 		})
+		return
 	} else {
 		err := db.Debug().Create(&User).Error
 		if err != nil {
@@ -51,7 +51,6 @@ func UserRegister(c *gin.Context) {
 	}
 }
 
-// Login
 func UserLogin(c *gin.Context) {
 	db := database.GetDB()
 	contentType := helpers.GetContentType(c)

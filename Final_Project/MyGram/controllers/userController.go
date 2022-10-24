@@ -16,7 +16,6 @@ func UserGet(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
 	User := models.User{}
-
 	userID := uint(userData["id"].(float64))
 
 	if contentType == appJSON {
@@ -48,7 +47,6 @@ func UserGetAll(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
 	User := []models.User{}
-
 	userID := uint(userData["id"].(float64))
 	_ = userID
 	if contentType == appJSON {
@@ -132,8 +130,16 @@ func UserDelete(c *gin.Context) {
 	} else {
 		c.ShouldBind(&User)
 	}
+	err := db.Model(&User).Where("id = ?", userID).Find(&User).Error
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error":   "Bad Request",
+			"message": "Not Found Data Id",
+		})
+		return
+	}
 
-	err := db.Model(&User).Where("id = ?", userID).Delete(&User).Error
+	err = db.Model(&User).Where("id = ?", userID).Delete(&User).Error
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

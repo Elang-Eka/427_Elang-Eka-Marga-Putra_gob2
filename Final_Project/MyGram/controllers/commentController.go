@@ -75,36 +75,11 @@ func GetComment(c *gin.Context) {
 	} else {
 		c.ShouldBind(&Photo)
 	}
-	type dataU struct {
-		ID       uint   `json:"user_id"`
-		Username string `json:"username"`
-		Email    string `json:"email"`
-	}
-	var UserData []dataU
-	err := db.Find(&User).Error
+
+	err := db.Model(&Comment).Where("photo_id = ?", photoId).Find(&Comment).Error
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error":   "Not Found",
-			"message": err.Error(),
-		})
-		return
-	} else {
-
-		for i := 0; i < len(User); i++ {
-			StructData := dataU{
-				ID:       User[i].ID,
-				Username: User[i].Username,
-				Email:    User[i].Email,
-			}
-			UserData = append(UserData, StructData)
-		}
-
-	}
-
-	err = db.Model(&Comment).Where("photo_id = ?", photoId).Find(&Comment).Error
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error":   "Not Found",
+			"error":   "Not Found Comment",
 			"message": err.Error(),
 		})
 		return
@@ -135,23 +110,28 @@ func GetComment(c *gin.Context) {
 		var data []structComment3
 		for i, v := range Comment {
 			_ = v
-
-			err = db.Model(&Photo).Where("id = ?", Comment[i].Photo_id).Find(&Photo).Error
+			err := db.Where("id = ?", photoId).Find(&Photo).Error
 			if err != nil {
 				c.JSON(http.StatusNotFound, gin.H{
 					"error":   "Not Found Photo",
 					"message": err.Error(),
 				})
-				return
+			}
+
+			err = db.Select("username, id, email").Where("id = ?", Comment[i].User_id).Find(&User).Error
+			if err != nil {
+				c.JSON(http.StatusNotFound, gin.H{
+					"error":   "Not Found User",
+					"message": err.Error(),
+				})
 			} else {
 				var users structComment1
-				for j := 0; j < len(User); j++ {
-					if Comment[i].User_id == UserData[j].ID {
-						users = structComment1{
-							ID:       UserData[j].ID,
-							Username: UserData[j].Username,
-							Email:    UserData[j].Email,
-						}
+				for j, v := range User {
+					_ = v
+					users = structComment1{
+						ID:       User[j].ID,
+						Username: User[j].Username,
+						Email:    User[j].Email,
 					}
 				}
 				photos := structComment2{
